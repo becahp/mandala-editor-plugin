@@ -1,0 +1,21 @@
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    font-style: normal;
+    font-weight: 500;
+    /*font-size: 12px;*/
+    line-height: 16px;
+}
+
+.breadcrumb img {
+    padding-top: 2px;
+}
+
+.breadcrumb a img {
+    margin-bottom: 2px;
+}
+
+.breadcrumb a {
+    color: #428bca;
+    text-decoration: none;
+}
