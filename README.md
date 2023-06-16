@@ -17,7 +17,7 @@ São usados os módulos da Highcharts.js:
 A customização da Mandala é feita no arquivo **js/functions-highcharts.js**. O design da Mandala é personalizado com definição de cores de folhas e redirecionamento para links no último nó de uma folha da Mandala. Além disso, o menu de exportação da Mandala foi traduzido para português.
 
 ## Editor
-O editor da Mandala é implementado utilizando o plugin [OrgChart](https://www.jqueryscript.net/chart-graph/Create-An-Editable-Organization-Chart-with-jQuery-orgChart-Plugin.html), que utiliza o jQuery na versão 1.11.1. 
+O editor da Mandala é implementado utilizando o plugin [OrgChart](https://www.jqueryscript.net/chart-graph/Create-An-Editable-Organization-Chart-with-jQuery-orgChart-Plugin.html), que utiliza o jQuery fornecido pelo WordPress, atualmente na versão 3.6.4.
 
 ![Editor da Mandala](editor-mandala.png)
 

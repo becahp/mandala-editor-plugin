@@ -1,5 +1,5 @@
 // Precisa do $function pq está em outra página
-$(function () {
+jQuery(document).ready(function($) {
   /**
    * Cria um novo chart de organização a partir de dados fornecidos e retorna o objeto chart.
    *
