@@ -4,12 +4,14 @@
  * Plugin Name: Mandala Plugin Ibict
  * Plugin URI: https://github.com/becahp
  * Description: Implementa a mandala e o editor customizado
- * Version: 2.0 
+ * Version: 2.1
  * Author: Rebeca Moura
  * Author URI: https://github.com/becahp
  */
 
-//Definicoes
+/**
+Variáveis globais e definições
+ */
 define('MANDALA_PATH', plugin_dir_path(__FILE__) . '/');
 define('MANDALA_JS_PATH', plugin_dir_path(__FILE__) . 'js/');
 define('MANDALA_JS_URL', plugin_dir_url(__FILE__) . 'js/');
@@ -17,12 +19,16 @@ define('MANDALA_JS_ORG_URL', plugin_dir_url(__FILE__) . 'js-original/');
 define('MANDALA_CSS_PATH', plugin_dir_path(__FILE__) . 'css/');
 define('MANDALA_CSS_URL', plugin_dir_url(__FILE__) . 'css/');
 
+/**
+Carrega os scripts e estilos necessários para a exibição da Mandala.
+@return void
+ */
 function mandalaScripts()
 {
-
+	// Versão dos arquivos, baseado no tempo atual em Unix timestamp
 	$ver = time();
 
-	//Mandala highcharts : carregar js só na primeira página
+	// Carrega os scripts do Highcharts somente na página inicial
 	if (is_front_page()) {
 		wp_enqueue_script('js_mandala_hc', MANDALA_JS_URL . 'functions-highcharts.js', array('js_hc', 'js_hc_sunburst', 'js_hc_exporting', 'js_hc_export_data', 'js_hc_accessibility'), false, $ver);
 		wp_enqueue_script('js_hc', MANDALA_JS_ORG_URL . 'highcharts.js', array(), $ver);
@@ -32,26 +38,23 @@ function mandalaScripts()
 		wp_enqueue_script('js_hc_accessibility', MANDALA_JS_ORG_URL . 'accessibility.js', array(), $ver);
 	}
 
+	// Carrega o estilo CSS da Mandala
 	wp_register_style('css_mandala_hc', MANDALA_CSS_URL . 'style-highcharts.css', false, $ver);
 	wp_enqueue_style('css_mandala_hc');
 
+	// Carrega o estilo CSS do breadcrumb
 	wp_register_style('css_breadcrumb', MANDALA_CSS_URL . 'style-breadcrumb.css', false, $ver);
 	wp_enqueue_style('css_breadcrumb');
 }
 add_action('wp_enqueue_scripts', 'mandalaScripts');
 
-/** Função que renderiza a mandala Sunburst
-	Ex: [shortcode_mandala] 
- **/
-function mandalaFunction($params)
-{
-	$html = "<div id='chart'></div>";
-	return $html;
-}
-add_shortcode('shortcode_mandala', 'mandalaFunction');
 
-/** Função que renderiza a mandala HighCharts
-	Ex: [shortcode_mandala_hc] 
+/**
+Função que renderiza a mandala usando a biblioteca HighCharts a partir de um shortcode.
+@param array $params - lista de parâmetros, não utilizados nesta função
+@return string - retorna uma string contendo o HTML que renderiza a mandala da biblioteca HighCharts.
+@shortcode shortcode_mandala_hc
+Exemplo de uso: [shortcode_mandala_hc]
  **/
 function mandalaHighCharts($params)
 {
@@ -60,34 +63,44 @@ function mandalaHighCharts($params)
 			</div>';
 	return $html;
 }
+// Adiciona o shortcode "shortcode_mandala_hc" para renderizar a mandala na página
 add_shortcode('shortcode_mandala_hc', 'mandalaHighCharts');
 
-
-/** Função que adiciona página ao menu admin
- * https://themes.artbees.net/blog/wordpress-custom-admin-pages/
- **/
+/**
+Adiciona uma nova página ao menu de administração do WordPress para o editor da Mandala.
+A função utiliza o WordPress API add_menu_page() para criar uma nova página no menu admin e a
+add_submenu_page() para adicionar uma subpágina de visualização da mandala.
+@return void
+ */
 function mandala_menu()
 {
 	add_menu_page(
-		__('Editor Mandala', 'mandala-plugin'),
-		__('Mandala', 'mandala-plugin'),
-		'edit_posts', //'manage_options',
-		'mandala-editor',
-		'mandala_admin_page'
+		__('Editor Mandala', 'mandala-plugin'), // Título da página
+		__('Mandala', 'mandala-plugin'), // Título do menu
+		'edit_posts', // Capacidade do usuário para acessar a página
+		'mandala-editor', // Slug da página
+		'mandala_admin_page' // Função de callback que renderiza a página
 	);
 
 	add_submenu_page(
-		'mandala-editor',
-		__('Visualizar Mandala', 'mandala-plugin'),
-		__('Visualizar', 'mandala-plugin'),
-		'manage_options',
-		'mandala-view',
-		'mandala_admin_view'
+		'mandala-editor', // Slug da página pai
+		__('Visualizar Mandala', 'mandala-plugin'), // Título da subpágina
+		__('Visualizar', 'mandala-plugin'), // Título do link no menu
+		'manage_options', // Capacidade do usuário para acessar a página
+		'mandala-view', // Slug da subpágina
+		'mandala_admin_view' // Função de callback que renderiza a página
 	);
 }
 add_action('admin_menu', 'mandala_menu');
 
-/** Página de edição */
+/**
+Define a página do editor da mandala no painel de administração do WordPress.
+Ao acessar essa página, o usuário verá os botões "Salvar mandala", "Mostrar todos os nós" e "Esconder todos os nós", 
+que permitem salvar as alterações realizadas, mostrar todos os nós da mandala ou esconder todos os nós, respectivamente. 
+Além disso, o usuário verá o contêiner da mandala, definido pelo elemento "orgChartContainer", que contém o elemento "orgChart", onde a mandala é exibida.
+Esses elementos possuem estilos para garantir que a mandala seja exibida corretamente na página.
+@return void
+ */
 function mandala_admin_page()
 {
 ?>
@@ -105,7 +118,12 @@ function mandala_admin_page()
 <?php
 }
 
-/** Página de visualização */
+/**
+Define a página do visualizador da mandala no painel de administração do WordPress.
+Ao acessar essa página, o usuário verá o título "Visualizador da Mandala" e a mandala será exibida utilizando o shortcode "[shortcode_mandala_hc]".
+O elemento contendo a mandala é definido dentro de um elemento "div" com largura definida em 50% para melhor visualização.
+@return void
+ */
 function mandala_admin_view()
 {
 	echo '<h1>Visualizador da Mandala:</h1>';
@@ -114,38 +132,54 @@ function mandala_admin_view()
 	echo ' </div>';
 }
 
-//Adding Styles and Scripts to WordPress Custom Admin Pages
+
+/**
+Adiciona estilos e scripts às páginas personalizadas do painel de administração do WordPress para o Editor da Mandala.
+Verifica se o hook da página é 'toplevel_page_mandala-editor' para registrar e enfileirar os estilos e scripts necessários.
+Os estilos adicionados incluem 'admin-style.css' e 'jquery.orgchart.css'. Os scripts adicionados incluem 'functions-editor.js', 'jquery.orgchart.js' e 'jquery-1.11.1.min.js'.
+@param string $hook O hook da página no painel de administração do WordPress.
+@return void
+ */
 function load_custom_wp_mandala_editor($hook)
 {
+	// Versão dos arquivos, baseado no tempo atual em Unix timestamp
 	$ver = time();
 
-	// Load only on ?page=mypluginname
+	// Verifica se o hook da página é 'toplevel_page_mandala-editor' para registrar e enfileirar os estilos e scripts necessários
 	if ($hook != 'toplevel_page_mandala-editor') {
 		return;
 	}
-	wp_register_style('css_mandala_admin', MANDALA_CSS_URL . 'admin-style.css', false, $ver);
-	wp_enqueue_style('css_mandala_admin');
 
-	// para o orgchart
+	// Registra e enfileira os estilos necessários
 	wp_register_style('css_orgchart', MANDALA_CSS_URL . 'jquery.orgchart.css', false, $ver);
 	wp_enqueue_style('css_orgchart');
 
+	// Registra e enfileira os scripts necessários, definindo dependências de outros scripts
 	wp_enqueue_script('js_mandala_admin', MANDALA_JS_URL . 'functions-editor.js', array('js_orgchart', 'js_jquery_orgchart'), $ver);
 	wp_enqueue_script('js_orgchart', MANDALA_JS_URL . 'jquery.orgchart.js', array('js_jquery_orgchart'), $ver);
 	wp_enqueue_script('js_jquery_orgchart', MANDALA_JS_URL . 'jquery-1.11.1.min.js', array(), $ver);
 }
 add_action('admin_enqueue_scripts', 'load_custom_wp_mandala_editor');
 
-//Adding Styles and Scripts to WordPress Custom Admin Pages
+
+/**
+Adiciona estilos e scripts às páginas personalizadas do painel de administração do WordPress para o Visualizador da Mandala.
+Verifica se o hook da página é 'toplevel_page_mandala-view' para registrar e enfileirar os estilos e scripts necessários.
+Os scripts adicionados incluem 'functions-highcharts.js', 'highcharts.js', 'sunburst.js', 'exporting.js', 'export-data.js' e 'accessibility.js'
+@param string $hook O hook da página no painel de administração do WordPress.
+@return void
+ */
 function load_custom_wp_mandala_viewer($hook)
 {
+	// Versão dos arquivos, baseado no tempo atual em Unix timestamp
 	$ver = time();
 
-	// Load only on ?page=mypluginname
+	// Verifica se o hook da página é 'toplevel_page_mandala-view' para registrar e enfileirar os estilos e scripts necessários
 	if ($hook != 'mandala_page_mandala-view') {
 		return;
 	}
-	// para o visualizador da mandala
+
+	// Registra e enfileira os scripts necessários, definindo dependências de outros scripts
 	wp_enqueue_script('js_mandala_hc', MANDALA_JS_URL . 'functions-highcharts.js', array('js_hc', 'js_hc_sunburst', 'js_hc_exporting', 'js_hc_export_data', 'js_hc_accessibility'), false, $ver);
 	wp_enqueue_script('js_hc', MANDALA_JS_ORG_URL . 'highcharts.js', array(), $ver);
 	wp_enqueue_script('js_hc_sunburst', MANDALA_JS_ORG_URL . 'sunburst.js', array(), $ver);
@@ -155,32 +189,47 @@ function load_custom_wp_mandala_viewer($hook)
 }
 add_action('admin_enqueue_scripts', 'load_custom_wp_mandala_viewer');
 
+
+/**
+Função para salvar os dados da Mandala em um arquivo de texto.
+Esta função é chamada por meio de uma requisição AJAX e recebe o conteúdo
+da Mandala em formato JSON. O conteúdo é então salvo em um arquivo de texto
+e uma mensagem é retornada para o usuário informando que a operação foi concluída.
+@return void
+ */
 function salvar_txt_mandala()
 {
-	// Pega variável do ajax
+	// Recebe o conteúdo da Mandala em formato JSON por meio da variável 
 	$json_content = $_POST['json_content'];
 
 	$file_name = MANDALA_PATH . "dados-mandala.txt";
 	$myfile = fopen($file_name, "w") or die("Unable to open file!");
 
+	// Decodifica o conteúdo da Mandala para remover as barras invertidas e entidades HTML.
 	$json_content_clean = html_entity_decode(stripslashes($json_content));
-	$json_content_clean = str_replace("},{", "},\n{", $json_content_clean); //incluir quebra de linha
-	//$json_content_clean = str_replace(',"parent"', ',"value":1,"parent"', $json_content_clean); //incluir value
 
+	// Adiciona uma quebra de linha entre os nós para facilitar a leitura do arquivo.
+	$json_content_clean = str_replace("},{", "},\n{", $json_content_clean);
+
+	// Escreve o conteúdo da Mandala no arquivo de texto.
 	fwrite($myfile, $json_content_clean);
 	fclose($myfile);
 
-	//resposta para o ajax
-	//echo $file_name;
+	// Informa ao usuário que os dados foram salvos com sucesso.
 	echo 'Dados salvos na mandala!';
 
 	backup_txt_mandala($file_name);
 
-	wp_die(); // this is required to terminate immediately and return a proper response
+	// Finaliza a execução da requisição AJAX.
+	wp_die();
 }
 add_action('wp_ajax_salvar_txt_mandala', 'salvar_txt_mandala');
 
-/*Função para backup dos dados da mandala*/
+/**
+Faz o backup dos dados da mandala salvos em um arquivo de texto.
+@param string $file_name O caminho completo do arquivo de texto com os dados da mandala.
+@return void
+ */
 function backup_txt_mandala($file_name)
 {
 	$current_user = wp_get_current_user();
@@ -189,5 +238,6 @@ function backup_txt_mandala($file_name)
 
 	$novo_nome = MANDALA_PATH . 'backup/' . $timestamp . '_dados-mandala_' . $user_login . '.txt';
 
+	// Faz uma cópia do arquivo com os dados da mandala no diretório de backup.
 	copy($file_name, $novo_nome);
 }

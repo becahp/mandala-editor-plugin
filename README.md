@@ -1,10 +1,9 @@
 # mandala-editor-plugin
 
-Plugin que implementa uma Mandala, um gráfico Sunburst (explosão solar) ideal para exibir dados hierárquicos e um editor customizado.
-
+O mandala-editor-plugin é um plugin que implementa uma Mandala, um gráfico Sunburst (explosão solar) que é ideal para exibir dados hierárquicos. Além disso, o plugin inclui um editor customizado que permite editar os dados da Mandala.
 
 ## Mandala
-O código javascript que implementa a Mandala é baseado na biblioteca [Highcharts.js](https://www.highcharts.com/), versão 9.2.2. 
+A Mandala é implementada utilizando a biblioteca [Highcharts.js](https://www.highcharts.com/) na versão 9.2.2. 
 
 ![Visualização da Mandala](mandala.png)
 
@@ -15,22 +14,13 @@ São usados os módulos da Highcharts.js:
 - js-original/export-data.js
 - js-original/accessibility.js
 
-A customização foi feita no arquivo **js/functions-highcharts.js**
-
-Resumo da costumização: 
-- Definição de cores das folhas
-- Redirecionamento para links no último nó de uma folha da Mandala
-- Traduções do menu de exportação
+A customização da Mandala é feita no arquivo **js/functions-highcharts.js**. O design da Mandala é personalizado com definição de cores de folhas e redirecionamento para links no último nó de uma folha da Mandala. Além disso, o menu de exportação da Mandala foi traduzido para português.
 
 ## Editor
-O editor da Mandala é baseado na biblioteca [OrgChart](https://www.jqueryscript.net/chart-graph/Create-An-Editable-Organization-Chart-with-jQuery-orgChart-Plugin.html) que utiliza o jQuery na versão 1.11.1.
+O editor da Mandala é implementado utilizando o plugin [OrgChart](https://www.jqueryscript.net/chart-graph/Create-An-Editable-Organization-Chart-with-jQuery-orgChart-Plugin.html), que utiliza o jQuery na versão 1.11.1. 
 
 ![Editor da Mandala](editor-mandala.png)
 
 A customização foi feita no arquivo **js/jquery-orgchart.js** enquanto a implementação está no **js/functions-editor.js**.
 
-Resumo da costumização:
-- Conexão do Editor à Mandala por meio de um arquivo de texto *dados-mandala.txt*
-- Criação e exclusão de folhas e nós na Mandala
-- Edição de Nomes, Links e Cores dos dados da Mandala
-- Visualização dos dados com botões de mostrar/esconder
+O editor da Mandala inclui uma conexão com a Mandala por meio de um arquivo de texto dados-mandala.txt. O editor permite a criação e exclusão de folhas e nós na Mandala, a edição de nomes, links e cores dos dados da Mandala e a visualização dos dados com botões de mostrar/esconder. 
