@@ -4,7 +4,7 @@
  * Plugin Name: Mandala Plugin Ibict
  * Plugin URI: https://github.com/becahp
  * Description: Implementa a mandala e o editor customizado
- * Version: 2.1
+ * Version: 2.2
  * Author: Rebeca Moura
  * Author URI: https://github.com/becahp
  */
@@ -136,7 +136,7 @@ function mandala_admin_view()
 /**
 Adiciona estilos e scripts às páginas personalizadas do painel de administração do WordPress para o Editor da Mandala.
 Verifica se o hook da página é 'toplevel_page_mandala-editor' para registrar e enfileirar os estilos e scripts necessários.
-Os estilos adicionados incluem 'admin-style.css' e 'jquery.orgchart.css'. Os scripts adicionados incluem 'functions-editor.js', 'jquery.orgchart.js' e 'jquery-1.11.1.min.js'.
+Os estilos adicionados incluem 'admin-style.css' e 'jquery.orgchart.css'. Os scripts adicionados incluem 'functions-editor.js', 'jquery.orgchart.js' e 'jquery'.
 @param string $hook O hook da página no painel de administração do WordPress.
 @return void
  */
@@ -155,9 +155,8 @@ function load_custom_wp_mandala_editor($hook)
 	wp_enqueue_style('css_orgchart');
 
 	// Registra e enfileira os scripts necessários, definindo dependências de outros scripts
-	wp_enqueue_script('js_mandala_admin', MANDALA_JS_URL . 'functions-editor.js', array('js_orgchart', 'js_jquery_orgchart'), $ver);
-	wp_enqueue_script('js_orgchart', MANDALA_JS_URL . 'jquery.orgchart.js', array('js_jquery_orgchart'), $ver);
-	wp_enqueue_script('js_jquery_orgchart', MANDALA_JS_URL . 'jquery-1.11.1.min.js', array(), $ver);
+	wp_enqueue_script('js_mandala_admin', MANDALA_JS_URL . 'functions-editor.js', array('js_orgchart'), $ver);
+	wp_enqueue_script('js_orgchart', MANDALA_JS_URL . 'jquery.orgchart.js', array('jquery'), $ver);
 }
 add_action('admin_enqueue_scripts', 'load_custom_wp_mandala_editor');
 
