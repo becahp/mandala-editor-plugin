@@ -4,13 +4,13 @@
  * Plugin Name: Mandala Plugin Ibict
  * Plugin URI: https://github.com/becahp
  * Description: Implementa a mandala e o editor customizado
- * Version: 2.2
+ * Version: 3.0
  * Author: Rebeca Moura
  * Author URI: https://github.com/becahp
  */
 
 /**
-Variáveis globais e definições
+Variáveis globais e definições -- TODO: deletar não usados
  */
 define('MANDALA_PATH', plugin_dir_path(__FILE__) . '/');
 define('MANDALA_JS_PATH', plugin_dir_path(__FILE__) . 'js/');
@@ -136,7 +136,7 @@ function mandala_admin_view()
 /**
 Adiciona estilos e scripts às páginas personalizadas do painel de administração do WordPress para o Editor da Mandala.
 Verifica se o hook da página é 'toplevel_page_mandala-editor' para registrar e enfileirar os estilos e scripts necessários.
-Os estilos adicionados incluem 'admin-style.css' e 'jquery.orgchart.css'. Os scripts adicionados incluem 'functions-editor.js', 'jquery.orgchart.js' e 'jquery'.
+Os estilos adicionados incluem 'jquery.orgchart.css'. Os scripts adicionados incluem 'functions-editor.js', 'jquery.orgchart.js' e 'jquery'.
 @param string $hook O hook da página no painel de administração do WordPress.
 @return void
  */
@@ -240,3 +240,6 @@ function backup_txt_mandala($file_name)
 	// Faz uma cópia do arquivo com os dados da mandala no diretório de backup.
 	copy($file_name, $novo_nome);
 }
+
+
+include 'functions-cpt.php';

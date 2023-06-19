@@ -24,3 +24,11 @@ O editor da Mandala é implementado utilizando o plugin [OrgChart](https://www.j
 A customização foi feita no arquivo **js/jquery-orgchart.js** enquanto a implementação está no **js/functions-editor.js**.
 
 O editor da Mandala inclui uma conexão com a Mandala por meio de um arquivo de texto dados-mandala.txt. O editor permite a criação e exclusão de folhas e nós na Mandala, a edição de nomes, links e cores dos dados da Mandala e a visualização dos dados com botões de mostrar/esconder. 
+
+
+## Atualizações
+- [X] transformar mandala em CPT
+- [] adiconar shortcodes para renderizar mandala
+- [X] abrir editor na página de edição
+- [] abrir render na página de visualização
+- [] adicionar booleano de principal para definir qual vai aparecer na página principal (e shortcode de principal)
